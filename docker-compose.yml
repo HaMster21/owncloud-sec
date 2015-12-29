@@ -1,0 +1,36 @@
+# Composition of the containers
+
+owncloud:
+  image: owncloud
+  ports:
+   - 80:80
+  volumes_from:
+    - owncloud-data
+  links:
+   - postgres:owncloud-db
+  hostname: cloud
+  domainname: cloud.example.org # Change to the hostname you will use
+
+postgres:
+  image: postgres
+  environment:
+    - POSTGRES_PASSWORD=mysecretpassword
+  volumes_from:
+    - postgres-data
+
+postgres-data:
+  image: postgres
+  # This is a data container, so we want to exit as soon as the container is created
+  command: /bin/true
+  volumes:
+    - /etc/postgresql
+    - /var/lib/postgresql
+
+owncloud-data:
+  image: owncloud
+  # This is a data container, so we want to exit as soon as the container is created
+  # BUT we will have to fix permissions issues first (33 is the ID of the www-data user)
+  command: /bin/bash -c "/bin/chown -R 33 /var/www/html/data && /bin/chown -R 33 /var/www/html/config"
+  volumes:
+    - /var/www/html/data
+    - /var/www/html/config
