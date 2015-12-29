@@ -50,7 +50,7 @@ RUN curl -fsSL -o owncloud.tar.bz2 \
 
 COPY docker-entrypoint.sh /entrypoint.sh
 
-EXPOSE 80,443
+EXPOSE 80 443
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["apache2-foreground"]
