@@ -1,7 +1,7 @@
 # Composition of the containers
 
 owncloud:
-  image: owncloud
+  image: hamster21/owncloud-sec
   ports:
    - 80:80
   volumes_from:
@@ -27,7 +27,7 @@ postgres-data:
     - /var/lib/postgresql
 
 owncloud-data:
-  image: owncloud
+  image: hamster21/owncloud-sec
   # This is a data container, so we want to exit as soon as the container is created
   # BUT we will have to fix permissions issues first (33 is the ID of the www-data user)
   command: /bin/bash -c "/bin/chown -R 33 /var/www/html/data && /bin/chown -R 33 /var/www/html/config"
